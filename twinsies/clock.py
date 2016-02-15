@@ -18,5 +18,6 @@ def twinsy_finder(fetch_size=10000):
         print("No twins found.")
 
 if __name__ == '__main__':
+    twinsy_finder()
     print("Starting scheduler")
     sched.start()
