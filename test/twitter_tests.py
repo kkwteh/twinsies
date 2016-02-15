@@ -12,8 +12,7 @@ class TwitterTests(TestCase):
         MockUser = namedtuple('MockUser', ['screen_name'])
         tweets = [
             MockTweet('Hello world', MockUser('user1'), 1),
-            MockTweet('Hello world', MockUser('user2'), 2),
-            MockTweet('Hello world', MockUser('user3'), 3)]
+            MockTweet('Hello world', MockUser('user2'), 2)]
         res = dig_for_twins(tweets)
         self.assertEqual(len(res), 2)
 
