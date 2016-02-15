@@ -14,6 +14,7 @@ def twinsy_finder(fetch_size=10000):
     query = random_trend_query()
     fetched_tweets = fetch_tweets(query, fetch_size=fetch_size)
     tweets = dig_for_twins(fetched_tweets)
+    del fetched_tweets
     if tweets:
         print("Twins found, updating status.")
         update_status(tweets)
