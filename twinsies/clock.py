@@ -3,9 +3,12 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from twinsies.twitter import (random_trend_query, fetch_tweets, dig_for_twins,
     update_status)
 
+from memory_profiler import profile
+
 sched = BlockingScheduler()
 
 @sched.scheduled_job('interval', minutes=16)
+@profile
 def twinsy_finder(fetch_size=10000):
     print("Running twinsy finder...")
     query = random_trend_query()
