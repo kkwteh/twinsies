@@ -50,9 +50,9 @@ class TwitterTests(TestCase):
         self.assertIsNone(res)
 
     def test_update_status_text(self):
-        tweets = [Tweet('awesome_sauce', 1), Tweet('internetdog', 2)]
+        tweets = [Tweet('awesome_sauce', 1, 'hello_world'), Tweet('internetdog', 2, 'hello_world')]
         res = update_status_text(tweets)
-        self.assertEqual(res, '.@awesome_sauce @internetdog You said the exact same thing at the exact same time!')
+        self.assertEqual(res, '.@awesome_sauce @internetdog You said the exact same thing at the exact same time!: hello_world')
 
     def test_random_trend_query(self):
         random_trend_query()

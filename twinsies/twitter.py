@@ -5,7 +5,7 @@ from toolz.dicttoolz import valfilter
 import random
 
 from collections import namedtuple
-Tweet = namedtuple('Tweet', ['screen_name', 'tweet_id'])
+Tweet = namedtuple('Tweet', ['screen_name', 'tweet_id', 'text'])
 
 CONSUMER_KEY = os.environ['TWITTER_API_KEY']
 CONSUMER_SECRET = os.environ['TWITTER_API_SECRET']
@@ -22,6 +22,7 @@ def update_status(tweets):
     api.update_status(text, in_reply_to_status_id=tweets[0].tweet_id)
     api.update_status(text, in_reply_to_status_id=tweets[1].tweet_id)
 
+MAX_TWEET_LENGTH = 140
 
 def update_status_text(tweets):
     CONTACTED_SCREEN_NAMES.add(tweets[0].screen_name)
@@ -29,17 +30,19 @@ def update_status_text(tweets):
 
     assert len(tweets) == 2
     comment = 'You said the exact same thing at the exact same time!'
-    return '.@{screen_name1} @{screen_name2} {comment}'.format(
+    return '.@{screen_name1} @{screen_name2} {comment}: {text}'.format(
         screen_name1=tweets[0].screen_name,
         screen_name2=tweets[1].screen_name,
-        comment=comment)
+        comment=comment,
+        text=tweets[0].text)[:MAX_TWEET_LENGTH]
 
 
 def dig_for_twins(tweets):
+    """Returns list of two random twinned tweets, if twins exist"""
     text_to_users = defaultdict(dict)
     for tweet in tweets:
         if not tweet.text.startswith('RT') and tweet.user.screen_name not in CONTACTED_SCREEN_NAMES:
-            text_to_users[tweet.text][tweet.user.screen_name] = tweet.id
+            text_to_users[tweet.text][tweet.user.screen_name] = (tweet.id, tweet.text)
 
     twins = valfilter(lambda v: len(v) > 1, text_to_users)
 
@@ -48,9 +51,13 @@ def dig_for_twins(tweets):
     else:
         text = random.choice(list(twins.keys()))
         random_sample = random.sample(list(twins[text].items()), 2)
-        tweets = [Tweet(*data) for data in random_sample]
+        tweets = [Tweet(*flatten(data)) for data in random_sample]
 
     return tweets
+
+
+def flatten(data):
+    return (data[0], data[1][0], data[1][1])
 
 
 def fetch_tweets(query, fetch_size=10000):
