@@ -41,7 +41,7 @@ def dig_for_twins(tweets):
     """Returns list of two random twinned tweets, if twins exist"""
     text_to_users = defaultdict(dict)
     for tweet in tweets:
-        if not tweet.text.startswith('RT') and tweet.user.screen_name not in CONTACTED_SCREEN_NAMES:
+        if 'RT' not in tweet.text and tweet.user.screen_name not in CONTACTED_SCREEN_NAMES:
             text_to_users[tweet.text][tweet.user.screen_name] = (tweet.id, tweet.text)
 
     twins = valfilter(lambda v: len(v) == 2, text_to_users)
