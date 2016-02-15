@@ -36,10 +36,10 @@ def update_status_text(tweets):
 
 
 def dig_for_twins(tweets):
-    text_to_users = defaultdict(list)
+    text_to_users = defaultdict(dict)
     for tweet in tweets:
         if not tweet.text.startswith('RT') and tweet.user.screen_name not in CONTACTED_SCREEN_NAMES:
-            text_to_users[tweet.text].append(Tweet(tweet.user.screen_name, tweet.id))
+            text_to_users[tweet.text][tweet.user.screen_name] = tweet.id
 
     twins = valfilter(lambda v: len(v) > 1, text_to_users)
 
@@ -47,7 +47,8 @@ def dig_for_twins(tweets):
         tweets = None
     else:
         text = random.choice(list(twins.keys()))
-        tweets = random.sample(twins[text], 2)
+        random_sample = random.sample(list(twins[text].items()), 2)
+        tweets = [Tweet(*data) for data in random_sample]
 
     return tweets
 

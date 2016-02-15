@@ -17,6 +17,16 @@ class TwitterTests(TestCase):
         res = dig_for_twins(tweets)
         self.assertEqual(len(res), 2)
 
+    def test_dig_for_twins_repeat_user(self):
+        MockTweet = namedtuple('MockTweet', ['text', 'user', 'id'])
+        MockUser = namedtuple('MockUser', ['screen_name'])
+        tweets = [
+            MockTweet('Hello world', MockUser('user1'), 1),
+            MockTweet('Hello world', MockUser('user1'), 2),
+            MockTweet('Hello world', MockUser('user1'), 3)]
+        res = dig_for_twins(tweets)
+        self.assertIsNone(res)
+
     def test_dig_for_twins_contacted(self):
         CONTACTED_SCREEN_NAMES.add('user1')
         CONTACTED_SCREEN_NAMES.add('user2')
