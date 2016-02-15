@@ -44,7 +44,7 @@ def dig_for_twins(tweets):
         if not tweet.text.startswith('RT') and tweet.user.screen_name not in CONTACTED_SCREEN_NAMES:
             text_to_users[tweet.text][tweet.user.screen_name] = (tweet.id, tweet.text)
 
-    twins = valfilter(lambda v: len(v) > 1, text_to_users)
+    twins = valfilter(lambda v: len(v) == 2, text_to_users)
 
     if len(twins) == 0:
         tweets = None
