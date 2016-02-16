@@ -29,8 +29,8 @@ def update_status_text(tweets):
     CONTACTED_SCREEN_NAMES.add(tweets[1].screen_name)
 
     assert len(tweets) == 2
-    comment = 'You said the exact same thing at the exact same time!'
-    return '.@{screen_name1} @{screen_name2} {comment}: {text}'.format(
+    comment = "I'mma let you finish, but y'all just said the exact same thing"
+    return '.@{screen_name1} @{screen_name2} {comment} - {text}'.format(
         screen_name1=tweets[0].screen_name,
         screen_name2=tweets[1].screen_name,
         comment=comment,
