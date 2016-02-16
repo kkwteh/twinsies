@@ -63,17 +63,11 @@ def flatten(data):
 def fetch_tweets(query, fetch_size=10000):
     assert fetch_size > 0
     api = twitter_api()
-    tweets = []
-    for i, tweet in enumerate(tweepy.Cursor(api.search,
+    return (tweet for tweet in tweepy.Cursor(api.search,
                                q=query,
-                               count=100,
                                result_type="recent",
                                include_entities=True,
-                               lang="en").items()):
-        tweets.append(tweet)
-        if i == fetch_size - 1:
-            break
-    return tweets
+                               lang="en").items(fetch_size))
 
 
 def random_trend_query():

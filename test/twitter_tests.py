@@ -58,4 +58,4 @@ class TwitterTests(TestCase):
 
     def test_fetch_tweets(self):
         res = fetch_tweets('twitter', fetch_size=2)
-        self.assertEqual(len(res), 2)
+        self.assertEqual(len(tuple(res)), 2)
